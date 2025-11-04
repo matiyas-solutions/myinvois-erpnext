@@ -4,10 +4,10 @@
   "doctype": "Client Script",
   "dt": "Sales Invoice",
   "enabled": 1,
-  "modified": "2025-10-31 18:24:38.381886",
+  "modified": "2025-11-04 11:47:01.682068",
   "module": "Myinvois Erpgulf",
   "name": "Set tax and charges",
-  "script": "frappe.ui.form.on('Sales Invoice', {\n\trefresh(frm) {\n        frm.ignore_doctypes_on_cancel_all = [\"Sales Invoice\", \"Sales Invoice Item\"];\n\t    if(frm.is_new()){\n\t        frm.trigger('set_tax_applicable')\n\t    }\n\t\t\n\t},\n\t    setup(frm){\n        frm.ignore_doctypes_on_cancel_all = [\"Sales Invoice\", \"Sales Invoice Item\"];\n    },\n    set_tax_applicable: function(frm) {\n        frm.clear_table('taxes');\n\n        if (frm.doc.company === 'NCIG (M) Sdn Bhd') {\n\n            let row = frm.add_child('taxes');\n            row.charge_type = \"On Net Total\";\n            row.account_head = \"VAT Exempted - NCIG\";\n            row.rate = 0;\n        }else if (frm.doc.company === 'Nsty Holding Sdn Bhd'){\n            let row = frm.add_child('taxes');\n            row.charge_type = \"On Net Total\";\n            row.account_head = \"VAT Exempted - NHSB\";\n            row.rate = 0;\n        }\n        frm.refresh_field('taxes');\n    },\n    custom_zatca_tax_category(frm){\n        frm.trigger('set_tax_applicable')\n    },\n    company(frm){\n        frm.trigger('set_tax_applicable')\n    }\n\n})",
+  "script": "frappe.ui.form.on('Sales Invoice', {\n\trefresh(frm) {\n        frm.ignore_doctypes_on_cancel_all = [\"Sales Invoice\", \"Sales Invoice Item\"];\n\t    if(frm.is_new()){\n\t        frm.trigger('set_tax_applicable')\n\t    }\n\t\t\n\t},\n\t    setup(frm){\n        frm.ignore_doctypes_on_cancel_all = [\"Sales Invoice\", \"Sales Invoice Item\"];\n    },\n    set_tax_applicable: function(frm) {\n        frm.clear_table('taxes');\n\n        if (frm.doc.company === 'NCIG (M) Sdn Bhd') {\n\n            let row = frm.add_child('taxes');\n            row.charge_type = \"On Net Total\";\n            row.account_head = \"VAT Exempted - NCIG\";\n            row.rate = 0;\n        }else if (frm.doc.company === 'Nsty Holding Sdn Bhd'){\n            let row = frm.add_child('taxes');\n            row.charge_type = \"On Net Total\";\n            row.account_head = \"VAT Exempted - NHSB\";\n            row.rate = 0;\n        }\n        frm.refresh_field('taxes');\n    },\n    custom_zatca_tax_category(frm){\n        frm.trigger('set_tax_applicable')\n    },\n    company(frm){\n        frm.trigger('set_tax_applicable')\n    },\n    after_save(frm){\n   frm.reload_doc()\n    }\n\n})",
   "view": "Form"
  },
  {
@@ -15,10 +15,10 @@
   "doctype": "Client Script",
   "dt": "Purchase Invoice",
   "enabled": 1,
-  "modified": "2025-11-03 10:31:45.982454",
+  "modified": "2025-11-04 11:48:39.146999",
   "module": "Myinvois Erpgulf",
   "name": "set tax in pi",
-  "script": "frappe.ui.form.on('Purchase Invoice', {\n\trefresh(frm) {\n\t    if(frm.is_new()){\n\t        frm.trigger('set_tax_applicable')\n\t    }\n\t\t\n\t},\n    set_tax_applicable: function(frm) {\n        frm.clear_table('taxes');\n\n        if (frm.doc.company === 'NCIG (M) Sdn Bhd') {\n\n            let row = frm.add_child('taxes');\n            row.charge_type = \"On Net Total\";\n            row.account_head = \"VAT Exempted - NCIG\";\n            row.rate = 0;\n        }else if (frm.doc.company === 'Nsty Holding Sdn Bhd'){\n            let row = frm.add_child('taxes');\n            row.charge_type = \"On Net Total\";\n            row.account_head = \"VAT Exempted - NHSB\";\n            row.rate = 0;\n        }\n        frm.refresh_field('taxes');\n    },\n    custom_zatca_tax_category(frm){\n        frm.trigger('set_tax_applicable')\n    },\n    company(frm){\n        frm.trigger('set_tax_applicable')\n    }\n\n})",
+  "script": "frappe.ui.form.on('Purchase Invoice', {\n\trefresh(frm) {\n\t    if(frm.is_new()){\n\t        frm.trigger('set_tax_applicable')\n\t    }\n\t\t\n\t},\n    set_tax_applicable: function(frm) {\n        frm.clear_table('taxes');\n\n        if (frm.doc.company === 'NCIG (M) Sdn Bhd') {\n\n            let row = frm.add_child('taxes');\n            row.charge_type = \"On Net Total\";\n            row.account_head = \"VAT Exempted - NCIG\";\n            row.rate = 0;\n        }else if (frm.doc.company === 'Nsty Holding Sdn Bhd'){\n            let row = frm.add_child('taxes');\n            row.charge_type = \"On Net Total\";\n            row.account_head = \"VAT Exempted - NHSB\";\n            row.rate = 0;\n        }\n        frm.refresh_field('taxes');\n    },\n    custom_zatca_tax_category(frm){\n        frm.trigger('set_tax_applicable')\n    },\n    company(frm){\n        frm.trigger('set_tax_applicable')\n    },\n        after_save(frm){\n   frm.reload_doc()\n    }\n\n})",
   "view": "Form"
  }
 ]
