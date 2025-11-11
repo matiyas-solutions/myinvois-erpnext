@@ -183,10 +183,8 @@ frappe.ui.form.on('Purchase Invoice', {
                 },
                 callback: function(r) {
                     if (r.message && r.message.length > 0 && frm.fields_dict.items) {
-                        console.log("Hiding fields in Purchase Invoice Item");
                         const grid = frm.fields_dict.items.grid;
                         r.message.forEach(field => {
-                            console.log("Hiding field:", field.fieldname);
                             grid.update_docfield_property(field.fieldname, "hidden", 1);
                         });
                         grid.refresh();

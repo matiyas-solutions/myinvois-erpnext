@@ -1222,7 +1222,6 @@ def submit_document_wrapper(doc, method=None):
 
         company_name = doc.company
         settings = frappe.get_doc("Company", company_name)
-        print(settings.custom_enable_lhdn_invoice, doc.custom_is_submit_to_lhdn)
         if not settings.custom_enable_lhdn_invoice and doc.custom_is_submit_to_lhdn == 1:
             frappe.throw(_(" LHDN Invoice Submission is not enabled in settings "))
         if not doc.custom_is_submit_to_lhdn and settings.custom_enable_lhdn_invoice:  # 0 or False
@@ -1232,13 +1231,10 @@ def submit_document_wrapper(doc, method=None):
                 )
             )
             return
-        
-        print(settings.custom_enable_lhdn_invoice, doc.custom_is_submit_to_lhdn)
 
         if settings.custom_enable_lhdn_invoice and doc.custom_is_submit_to_lhdn == 1:
             # Call the submit_document function
             # frappe.throw(f"Calling submit_document for {doc.name}")
-            print("Calling submit_document for", doc.name)
             submit_document(doc.name)
         else:
             pass
