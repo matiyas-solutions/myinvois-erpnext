@@ -852,7 +852,7 @@ def validate_before(invoice_number, any_item_has_tax_template=False):
         company_name = sales_invoice_doc.company
         settings = frappe.get_doc("Company", company_name)
         company_abbr = settings.abbr
-        if not sales_invoice_doc.custom_is_submit_to_lhdn:  # 0 or False
+        if not sales_invoice_doc.custom_is_submit_to_lhdn or not settings.custom_enable_lhdn_invoice:  # 0 or False
             return
         if any(item.item_tax_template for item in sales_invoice_doc.items) and not all(
             item.item_tax_template for item in sales_invoice_doc.items
@@ -1222,19 +1222,23 @@ def submit_document_wrapper(doc, method=None):
 
         company_name = doc.company
         settings = frappe.get_doc("Company", company_name)
-        if not settings.custom_enable_lhdn_invoice:
+        print(settings.custom_enable_lhdn_invoice, doc.custom_is_submit_to_lhdn)
+        if not settings.custom_enable_lhdn_invoice and doc.custom_is_submit_to_lhdn == 1:
             frappe.throw(_(" LHDN Invoice Submission is not enabled in settings "))
-        if not doc.custom_is_submit_to_lhdn:  # 0 or False
+        if not doc.custom_is_submit_to_lhdn and settings.custom_enable_lhdn_invoice:  # 0 or False
             frappe.msgprint(
                 _(
                     "Invoice will *not* be sent to LHDN because “Submit to LHDN” is unticked."
                 )
             )
             return
+        
+        print(settings.custom_enable_lhdn_invoice, doc.custom_is_submit_to_lhdn)
 
         if settings.custom_enable_lhdn_invoice and doc.custom_is_submit_to_lhdn == 1:
             # Call the submit_document function
             # frappe.throw(f"Calling submit_document for {doc.name}")
+            print("Calling submit_document for", doc.name)
             submit_document(doc.name)
         else:
             pass

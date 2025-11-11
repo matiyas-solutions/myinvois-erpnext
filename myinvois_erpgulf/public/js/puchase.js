@@ -129,12 +129,74 @@ frappe.ui.form.on('Purchase Invoice', {
             });
         }
     },
+    onload: function(frm) {
+        frm.trigger('hide_fields_invoicing');
+    },
+    company: function(frm) {
+        frm.trigger('hide_fields_invoicing');
+    },
     is_return: function(frm) {
         set_invoice_type_code(frm);
     },
     custom_is_return_refund: function(frm) {
         set_invoice_type_code(frm);
     },
+    hide_fields_invoicing: function(frm) {
+        const target_module = "Myinvois Erpgulf"; // Change to your module
+
+    frappe.db.get_value('Company', frm.doc.company, 'custom_enable_lhdn_invoice', (r) => {
+        if (r && r.custom_enable_lhdn_invoice == 0) {
+
+            // Hide fields on parent table
+            frappe.call({
+                method: 'frappe.client.get_list',
+                args: {
+                    doctype: 'Custom Field',
+                    filters: {
+                        module: target_module,
+                        dt: "Purchase Invoice"
+                    },
+                    fields: ['dt', 'fieldname']
+                },
+                callback: function(r) {
+                    if (r.message && r.message.length > 0) {
+                        r.message.forEach(field => {
+                            if (field.dt === "Purchase Invoice" && frm.fields_dict[field.fieldname]) {
+                                frm.set_df_property(field.fieldname, 'hidden', 1);
+                            }
+                        });
+                        frm.refresh_fields();
+                    }
+                }
+            });
+
+            // Hide fields on child table
+            frappe.call({
+                method: 'frappe.client.get_list',
+                args: {
+                    doctype: 'Custom Field',
+                    filters: {
+                        module: target_module,
+                        dt: "Purchase Invoice Item"
+                    },
+                    fields: ['dt', 'fieldname']
+                },
+                callback: function(r) {
+                    if (r.message && r.message.length > 0 && frm.fields_dict.items) {
+                        console.log("Hiding fields in Purchase Invoice Item");
+                        const grid = frm.fields_dict.items.grid;
+                        r.message.forEach(field => {
+                            console.log("Hiding field:", field.fieldname);
+                            grid.update_docfield_property(field.fieldname, "hidden", 1);
+                        });
+                        grid.refresh();
+                    }
+                }
+            });
+
+        }
+    });
+}
 });
 
 // 🔧 Utility: Show loading overlay
