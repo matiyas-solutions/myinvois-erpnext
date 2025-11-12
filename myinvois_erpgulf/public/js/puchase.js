@@ -63,6 +63,9 @@ frappe.ui.form.on('Purchase Invoice', {
     refresh: function(frm) {
         set_invoice_type_code(frm);
         // Always show "Get Status" button
+        let enabled = frm.doc.custom_is_lhdn_enabled;
+
+        if (enabled && !frm.doc.__islocal) {
         frm.add_custom_button(__('Get Status of SubmittedDoc'), function () {
             frappe.call({
                 method: "myinvois_erpgulf.myinvois_erpgulf.get_status.status_submit",
@@ -77,14 +80,19 @@ frappe.ui.form.on('Purchase Invoice', {
                 }
             });
         });
+    }
 
         // Only proceed with Submit button if docstatus is 1
         if (frm.doc.docstatus !== 1) return;
 
         let response = frm.doc.custom_submit_response;
         let should_show_button = false;
+        if (!enabled) {
+            should_show_button = false;
+            return;
+        }
 
-        if (!response) {
+        if (!response && enabled) {
             should_show_button = true;
         } else {
             try {

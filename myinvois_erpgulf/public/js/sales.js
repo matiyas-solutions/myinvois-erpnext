@@ -56,10 +56,17 @@ frappe.ui.form.on('Sales Invoice', {
     refresh: function(frm) {
         if (frm.doc.docstatus !== 1) return;
 
+        let enabled = frm.doc.custom_is_lhdn_enabled;
+
         let response = frm.doc.custom_submit_response;
         let should_show_button = false;
 
-        if (!response) {
+        if (!enabled) {
+            should_show_button = false;
+            return;
+        }
+
+        if (!response && enabled) {
             should_show_button = true;
         } else {
             try {
@@ -195,8 +202,9 @@ frappe.ui.form.on('Sales Invoice', {
         if(frm.is_new()){
              set_invoice_type_code(frm);
         }
-       
-        // Add the custom button
+        let enabled = frm.doc.custom_is_lhdn_enabled;
+       // Add the custom button
+        if(enabled && !frm.doc.__islocal ) {
         frm.add_custom_button(__('Get Status of SubmittedDoc'), function() {
             // Call the backend method to get the status
             frappe.call({
@@ -212,6 +220,7 @@ frappe.ui.form.on('Sales Invoice', {
                 }
             });
         });
+    }
         },
 
     custom_check_customer_tin: function(frm) {
