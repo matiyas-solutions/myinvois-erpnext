@@ -317,6 +317,7 @@ def company_data(invoice, sales_invoice_doc):
             address = frappe.get_doc(
                 "Address", company_doc.supplier_primary_address
             )  # Select the first address only
+            print(address)
         # frappe.throw(f"Address loaded: {address.name}")
         # Create PostalAddress Element
         post_add = ET.SubElement(party_, "cac:PostalAddress")
@@ -450,19 +451,14 @@ def customer_data(invoice, sales_invoice_doc):
         )
 
         address_list = frappe.get_list(
-            "Address",
-            filters={"is_your_company_address": "1"},
-            fields=[
-                "address_line1",
-                "address_line2",
-                "city",
-                "pincode",
-                "state",
-                "custom_state_code",
-                "phone",
-                "email_id",
-            ],
-            order_by="creation desc",  # Ensures a consistent selection
+		"Address",
+		filters=[
+			["Dynamic Link", "link_doctype", "=", "Company"],
+			["Dynamic Link", "link_name", "=", sales_invoice_doc.company],
+			["Dynamic Link", "parenttype", "=", "Address"],
+		],
+		fields=["*"],
+		order_by="`tabAddress`.creation desc",
         )
 
         if not address_list:
@@ -473,6 +469,7 @@ def customer_data(invoice, sales_invoice_doc):
             )
 
         address = address_list[0]
+        print(address)
         posta_address = ET.SubElement(cac_Party, "cac:PostalAddress")
         name_city = ET.SubElement(posta_address, "cbc:CityName")
         name_city.text = address.city
