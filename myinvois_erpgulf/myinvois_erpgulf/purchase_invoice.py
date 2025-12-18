@@ -469,7 +469,6 @@ def customer_data(invoice, sales_invoice_doc):
             )
 
         address = address_list[0]
-        print(address)
         posta_address = ET.SubElement(cac_Party, "cac:PostalAddress")
         name_city = ET.SubElement(posta_address, "cbc:CityName")
         name_city.text = address.city

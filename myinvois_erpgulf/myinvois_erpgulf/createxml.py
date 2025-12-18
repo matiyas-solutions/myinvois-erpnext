@@ -331,8 +331,6 @@ def company_data(invoice, sales_invoice_doc):
 		fields=["*"],
 		order_by="`tabAddress`.creation desc",
         ) 
-        
-        print(address_list)
 
         if not address_list:
             frappe.throw(
