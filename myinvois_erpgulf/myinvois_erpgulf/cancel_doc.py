@@ -29,6 +29,9 @@ def cancel_document_wrapper(doc, method):
     if not doc.custom_submit_response:
 
         return
+    
+    if doc.custom_lhdn_status == "Invalid":
+        return
 
     try:
         response_data = json.loads(doc.custom_submit_response)
