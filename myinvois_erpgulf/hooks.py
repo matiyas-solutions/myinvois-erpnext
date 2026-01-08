@@ -285,4 +285,5 @@ fixtures = [
     {"dt": "Print Format", "filters": [["module", "=", "Myinvois Erpgulf"]]},
     {"dt": "Property Setter", "filters": [["module", "=", "Myinvois Erpgulf"]]},
     {"dt": "Client Script", "filters": [["module", "=", "Myinvois Erpgulf"]]},
+    {"dt": "Server Script", "filters": [["module", "=", "Myinvois Erpgulf"]]},
 ]
