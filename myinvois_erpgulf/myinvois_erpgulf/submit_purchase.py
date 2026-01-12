@@ -1004,7 +1004,8 @@ def submit_document(invoice_number, any_item_has_tax_template=False):
                         f"{response_data}"
                     )
                 else:
-                    status_submission(invoice_number, sales_invoice_doc, company_abbr)
+                    status = status_submission(invoice_number, sales_invoice_doc, company_abbr)
+                    frappe.msgprint(f"Document status: {status}")
                 #     qr_image_path = generate_qr_code(sales_invoice_doc, status)
                 #     attach_qr_code_to_sales_invoice(sales_invoice_doc, qr_image_path)
                 # # status_submission(invoice_number, sales_invoice_doc)
