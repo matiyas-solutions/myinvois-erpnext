@@ -61,7 +61,10 @@
 
 frappe.ui.form.on('Purchase Invoice', {
     refresh: function(frm) {
-        set_invoice_type_code(frm);
+        if(frm.is_new()) {
+            set_invoice_type_code(frm);
+        }
+        
         // Always show "Get Status" button
         let enabled = frm.doc.custom_is_lhdn_enabled;
 
