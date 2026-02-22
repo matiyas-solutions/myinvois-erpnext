@@ -1,6 +1,6 @@
 [project]
 name = "myinvois_erpgulf"
-version = "2.1"
+#version = "2.1"
 authors = [
     { name = "ERPGulf", email = "support@erpgulf.com"}
 ]
